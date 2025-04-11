@@ -10,6 +10,7 @@
 #include "Geometry/Plane.h"
 #include "Lighting/DirectionalLight.h"
 #include "Lighting/PointLight.h"
+#include "Geometry/Mandelbulb.h"
 
 #include <yaml-cpp/yaml.h>
 
@@ -50,6 +51,12 @@ void ConfigManager::load_file(const std::string &file_src) {
         if (objects[i]["type"].as<std::string>() == "Sphere") {
             auto properties = objects[i]["properties"];
             m_objects.push_back(std::make_shared<Sphere>(properties["center"].as<Vec3f>(),
+                                                             properties["radius"].as<float>(),
+                                                             properties["material"].as<Material>()));
+        }
+        else if (objects[i]["type"].as<std::string>() == "Mandelbulb") {
+            auto properties = objects[i]["properties"];
+            m_objects.push_back(std::make_shared<Mandelbulb>(properties["center"].as<Vec3f>(),
                                                              properties["radius"].as<float>(),
                                                              properties["material"].as<Material>()));
         }

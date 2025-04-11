@@ -11,3 +11,4 @@ glad.c
 build/*
 simple-raytracer
 *.png
+.cache/*

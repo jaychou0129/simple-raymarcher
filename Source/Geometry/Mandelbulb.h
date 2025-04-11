@@ -1,5 +1,5 @@
-#ifndef SIMPLE_RAYTRACER_SPHERE_H
-#define SIMPLE_RAYTRACER_SPHERE_H
+#ifndef SIMPLE_RAYTRACER_MANDELBULB_H
+#define SIMPLE_RAYTRACER_MANDELBULB_H
 
 #include "Vec3f.h"
 #include "Ray.h"
@@ -8,7 +8,7 @@
 
 class Mandelbulb : public SceneObject {
 public:
-    Sphere(const Vec3f& center, float radius, const Material& surface_material);
+    Mandelbulb(const Vec3f& center, float radius, const Material& surface_material);
 
     Vec3f center()        const { return m_center;           }
     float radius()        const { return m_radius;           }
@@ -22,4 +22,4 @@ private:
 };
 
 
-#endif //SIMPLE_RAYTRACER_SPHERE_H
+#endif //SIMPLE_RAYTRACER_MANDELBULB_H
