@@ -54,6 +54,8 @@ public:
 
     float shininess()   const { return m_shininess; }
     Color color()       const { return m_color;     }
+    bool operator==(const Material& other) const;
+
 
 private:
     float m_specular;

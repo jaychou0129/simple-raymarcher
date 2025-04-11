@@ -17,6 +17,11 @@
 
 const Color Raymarcher::FOG_COLOR = {0.0f, 0.0f, 0.0f};
 
+template <typename T>
+T clamp(T value, T minVal, T maxVal) {
+    return (value < minVal) ? minVal : (value > maxVal) ? maxVal : value;
+}
+
 // Uses the gradient of the SDF to estimate the normal on the surface
 // Much more efficient than calculus
 void Raymarcher::estimate_normal(IN const Vec3f& point, OUT Vec3f& normal) {
@@ -64,17 +69,20 @@ void Raymarcher::march(IN const Ray& ray, OUT Intersection& output_intersection)
         // Hits an object
         if (intersection.distance() < epsilon) {
             output_intersection = Intersection(total, intersection.material(), position);
+            output_intersection.set_steps(step + 1);
             return;
         }
 
         // Does not hit an object
         if (intersection.distance() > Constants::MAX_RENDER_DISTANCE) {
             output_intersection = Intersection(Constants::MAX_RENDER_DISTANCE, Constants::BACKGROUND_MATERIAL, position);
+            output_intersection.set_steps(step);
             return;
         }
     }
 
     output_intersection = Intersection(Constants::MAX_RENDER_DISTANCE, Constants::BACKGROUND_MATERIAL, position);
+    output_intersection.set_steps(MAX_MARCHING_STEPS);
     return;
 }
 
@@ -138,6 +146,10 @@ void Raymarcher::apply_fog(IN const Color& color, IN float distance, OUT Color& 
     mix(color, FOG_COLOR, fog_amount, resultant_color);
 }
 
+inline float map(float n, float start1, float stop1, float start2, float stop2) {
+    return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
+}
+
 void Raymarcher::calculate_rows(int y_lower_bound, int y_upper_bound, int x_min, int x_max, const ConfigManager& config_manager_instance, size_t num_of_lights) {
     for (auto y = y_lower_bound; y < y_upper_bound; ++y) {
         for (auto x = x_min; x < x_max; ++x) {
@@ -150,17 +162,34 @@ void Raymarcher::calculate_rows(int y_lower_bound, int y_upper_bound, int x_min,
             Intersection intersection;
             march(view_dir, intersection);
 
-            Color pixel_color = Color{0, 0, 0};
+            // Color pixel_color = Color{0, 0, 0};
 
-            for (int i = 0; i < num_of_lights; ++i) {
-                auto light = config_manager_instance.get_light(i);
+            // for (int i = 0; i < num_of_lights; ++i) {
+            //     auto light = config_manager_instance.get_light(i);
 
-                Color this_light_color;
-                phong_illumination(intersection.material(), *light, intersection.pos(),
-                                   config_manager_instance.get_camera()->pos(), this_light_color);
+            //     Color this_light_color;
+            //     phong_illumination(intersection.material(), *light, intersection.pos(),
+            //                        config_manager_instance.get_camera()->pos(), this_light_color);
 
-                pixel_color += this_light_color;
+            //     pixel_color += this_light_color;
 
+            // }
+
+            Color pixel_color;
+            Vec3f pos = intersection.pos();
+            float h = pos.len() / 2.0f;
+            pixel_color = Color(h, 0.0f, 1.0f - h); // ← main color
+
+            if (intersection.material() == Constants::BACKGROUND_MATERIAL) {
+                // Missed — apply glow
+                float glow = map(intersection.steps(), 0.0f, MAX_MARCHING_STEPS, 0.0f, 1.3f);
+                glow = clamp(glow, 0.0f, 1.0f);
+                pixel_color = Color(glow, glow * 0.3f, glow);
+            } else {
+                // Hit — apply internal AO glow
+                float ao = static_cast<float>(intersection.steps()) / (MAX_MARCHING_STEPS * (1.0f - 0.6f)); // AOAmount = 0.6
+                ao = clamp(ao * 1.8f, 0.0f, 1.0f);
+                pixel_color *= ao;
             }
 
             apply_fog(pixel_color, intersection.distance(), pixel_color);

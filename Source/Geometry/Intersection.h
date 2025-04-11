@@ -21,10 +21,13 @@ public:
     float    distance() const { return m_distance; }
     Material material() const { return m_material; }
     Vec3f    pos()      const { return m_intersection_pos; }
+    void     set_steps(int steps) {m_steps = steps;}
+    int      steps() const {return m_steps;}
 private:
     float    m_distance;
     Material m_material;
     Vec3f    m_intersection_pos;
+    int      m_steps = 0;
 };
 
 Intersection min(const Intersection& a, const Intersection& b);

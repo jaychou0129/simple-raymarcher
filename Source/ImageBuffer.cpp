@@ -17,7 +17,14 @@ ImageBuffer::ImageBuffer(std::shared_ptr<Screen<int>>& screen_dimensions, const 
         PixelBufferBase(screen_dimensions), file_src(src) { }
 
 void ImageBuffer::flush() {
-    fp = fopen(file_src.c_str(), "wb");
+    // Construct filename like "output/frame_5.png"
+    std::ostringstream filename_stream;
+    filename_stream << file_src << "_" << offset << ".png";
+    std::string filename = filename_stream.str();
+    offset += 1;
+
+    // Open the file for binary writing
+    FILE* fp = fopen(filename.c_str(), "wb");
     if (!fp) {
         std::ostringstream ss;
         ss << "error: Unable to open file " << file_src << " for writing";
@@ -81,6 +88,9 @@ void ImageBuffer::flush() {
     png_write_end(png_ptr, NULL);
 
     png_init_io(png_ptr, fp);
+    if (fp) {
+        fclose(fp);
+    }
 }
 
 ImageBuffer::~ImageBuffer() {

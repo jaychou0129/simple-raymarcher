@@ -24,6 +24,7 @@ public:
     size_t get_amount_of_objects() const { validate_config("amount of objects"); return m_objects.size(); }
 
     const std::shared_ptr<Camera> get_camera() const { return m_camera; }
+    void set_camera_rotation(const Vec3f& pivot, double rad);
 
     const std::shared_ptr<LightBase> get_light(int index) const;
     size_t get_amount_of_lights() const { validate_config("amount of lights"); return m_lights.size(); }

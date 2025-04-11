@@ -3,34 +3,16 @@
 #include <cmath>
 #define rot 100.f
 
-Mandelbulb::Mandelbulb(const Vec3f &center, float radius, const Material& surface_material)
-        : m_center(center), m_radius(radius), m_radius2(radius * radius), SceneObject(surface_material) { }
+Mandelbulb::Mandelbulb(const Vec3f &center, const Material& surface_material)
+    : SceneObject(surface_material), m_center(center) { }
 
-
-
-Vec3f rotate_point_y(double cx, double cz, double angle, Vec3f p) {
-    double s = sin(angle);
-    double c = cos(angle);
-
-    // translate point back to origin:
-    p.set_x(p.x() - cx);
-    p.set_z(p.z() - cz);
-
-    // rotate point
-    double xnew = p.x() * c - p.z() * s;
-    double znew = p.x() * s + p.z() * c;
-
-    // translate point back:
-    p.set_x(xnew + cx);
-    p.set_z(znew + cz);
-    return p;
-}
 
 void Mandelbulb::sdf(IN const Vec3f& position, OUT Intersection& output_intersection) const {
-    Vec3f cam = position + center();
+    // Vec3f cam = position + center();
+    Vec3f cam = position;
 
     // Rotate on y-axis — assuming you have a rotate_point_y function
-    cam = rotate_point_y(0, 0, rot, cam); // rot is assumed to be a member variable
+    // cam = rotate_point_y(0, 0, rot, cam); // rot is assumed to be a member variable
 
     Vec3f z = cam;
     double dr = 1.0;

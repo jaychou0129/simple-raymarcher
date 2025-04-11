@@ -17,6 +17,7 @@ class ImageBuffer : public PixelBufferBase {
 private:
     // Location to write image to
     std::string file_src;
+    int offset = 0; // file name offset i.e. file_src_0.png, file_src_1.png, etc.
 
     // PNG data
     png_structp png_ptr;

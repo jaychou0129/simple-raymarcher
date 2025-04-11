@@ -12,6 +12,7 @@
 #include "Lighting/PointLight.h"
 #include "Geometry/Mandelbulb.h"
 
+#include <iostream>
 #include <yaml-cpp/yaml.h>
 
 ConfigManager& ConfigManager::instance() {
@@ -57,7 +58,6 @@ void ConfigManager::load_file(const std::string &file_src) {
         else if (objects[i]["type"].as<std::string>() == "Mandelbulb") {
             auto properties = objects[i]["properties"];
             m_objects.push_back(std::make_shared<Mandelbulb>(properties["center"].as<Vec3f>(),
-                                                             properties["radius"].as<float>(),
                                                              properties["material"].as<Material>()));
         }
         else if (objects[i]["type"].as<std::string>() == "Plane") {
@@ -149,4 +149,19 @@ void ConfigManager::validate_config(const std::string& field_accessed) const {
                                          field_accessed +
                                          " before the config was loaded");
     }
+}
+
+
+void ConfigManager::set_camera_rotation(const Vec3f& pivot, double rad) {
+    Vec3f translated = m_camera->initial_pos() - pivot;
+
+    double cos_r = std::cos(rad);
+    double sin_r = std::sin(rad);
+
+    double x_new = translated.x() * cos_r - translated.z() * sin_r;
+    double z_new = translated.x() * sin_r + translated.z() * cos_r;
+
+    Vec3f new_pos = Vec3f(x_new, translated.y(), z_new) + pivot;
+    std::cout << "radius: " << rad << "\tnew_position: " << new_pos.x() << ", " << new_pos.y() << ", " << new_pos.z() << std::endl;
+    m_camera->set_pos(Vec3f(x_new, translated.y(), z_new) + pivot);
 }
