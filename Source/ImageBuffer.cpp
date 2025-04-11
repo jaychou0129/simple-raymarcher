@@ -48,7 +48,7 @@ void ImageBuffer::flush() {
 
     png_text title_text;
     title_text.compression = PNG_TEXT_COMPRESSION_NONE;
-    title_text.key = "Title";
+    title_text.key = const_cast<char*>("Title");
     title_text.text = (char *)file_src.c_str();
     png_set_text(png_ptr, info_ptr, &title_text, 1);
 
