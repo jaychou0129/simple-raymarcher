@@ -39,6 +39,8 @@ public:
     void operator*=(const Color& rhs);
     void operator/=(float k);
 
+    bool operator==(const Color& other) const;
+
     float dot(const Color& rhs) const;
     Color cross(const Color& rhs ) const;
 

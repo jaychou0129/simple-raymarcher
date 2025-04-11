@@ -20,8 +20,12 @@ public:
 
     Vec3f pos() const { return m_pos; }
     void set_pos(const Vec3f& pos) { m_pos = pos; }
+
+    Vec3f initial_pos() const { return m_initial_pos; }
+    void set_initial_pos(const Vec3f& pos) { m_initial_pos = pos; }
 private:
     Vec3f m_pos;
+    Vec3f m_initial_pos;
 };
 
 #endif //SIMPLE_RAYTRACER_CAMERA_H

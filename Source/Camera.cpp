@@ -7,7 +7,8 @@
 #include "Camera.h"
 #include "Geometry/Vec3f.h"
 
-Camera::Camera(const Vec3f& camera_pos) : m_pos(camera_pos) { }
+Camera::Camera(const Vec3f& camera_pos)
+    : m_pos(camera_pos), m_initial_pos(camera_pos) { }
 
 Ray Camera::fire_ray(const std::pair<float, float>& coords) {
 

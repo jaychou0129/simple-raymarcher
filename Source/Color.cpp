@@ -58,6 +58,10 @@ void Color::operator/=(float k) {
     *this = *this / k;
 }
 
+bool Color::operator==(const Color& other) const {
+    return r() == other.r() && g() == other.g() && b() == other.b();
+}
+
 
 float Color::dot(const Color &rhs) const {
     return (r() * rhs.r()) + (g() * rhs.g()) + (b() * rhs.b());

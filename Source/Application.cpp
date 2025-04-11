@@ -8,12 +8,13 @@
 #include <stdexcept>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <chrono>
 
 
 void initiate_png_mode(std::shared_ptr<PixelBufferBase>& pixel_buffer,
                        std::shared_ptr<Screen<int>>& screen) {
-    std::cout << "\nPlease enter the location to where you want the scene to be drawn\nExample: To draw to a file named "
-            "scene.png type scene.png" << std::endl;
+    std::cout << "\nPlease enter the location to where you want the scene to be drawn\nExample: To draw to files named "
+            "scene_0.png, scene_1.png, ..., type scene" << std::endl;
 
     std::string src;
     while (!(std::cin >> src))
@@ -29,7 +30,7 @@ void initiate_opengl_mode(std::shared_ptr<PixelBufferBase>& pixel_buffer,
 }
 
 Application::Application() {
-    std::cout << "Running raymarcher created by Balajanovski..." << std::endl;
+    std::cout << "Running raymarcher created by Balajanovski and modified by the Magical Fractals! team for CS 184 project..." << std::endl;
 
     m_screen = std::make_shared<Screen<int>>(0, ConfigManager::instance().get_screen_width(),
                                              0, ConfigManager::instance().get_screen_height());
@@ -84,9 +85,19 @@ Application::~Application() {
 
 
 void Application::run_loop() {
-
-    m_raymarcher->calculate_frame();
-    m_stream->flush();
+    for (int i = 0; i < 360; i += 10) {
+        std::cout << "Rendering frame " << i / 10 + 1 << " of 36" << std::endl;
+        auto start_time = std::chrono::high_resolution_clock::now();
+        
+        ConfigManager::instance().set_camera_rotation(Vec3f(0, 0, 0), i * M_PI / 180.0);
+        m_raymarcher->calculate_frame();
+        
+        auto end_time = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+        std::cout << "Rendered in " << duration << " ms" << std::endl;
+        
+        m_stream->flush();
+    }
 
     std::cout << "Closing down..." << std::endl;
 }
