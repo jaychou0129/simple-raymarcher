@@ -85,17 +85,22 @@ Application::~Application() {
 
 
 void Application::run_loop() {
-    for (int i = 0; i < 360; i += 10) {
-        std::cout << "Rendering frame " << i / 10 + 1 << " of 36" << std::endl;
-        auto start_time = std::chrono::high_resolution_clock::now();
+    // for (int i = 0; i < 360; i += 10) {
+    //     std::cout << "Rendering frame " << i / 10 + 1 << " of 36" << std::endl;
+    //     auto start_time = std::chrono::high_resolution_clock::now();
         
-        ConfigManager::instance().set_camera_rotation(Vec3f(0, 0, 0), i * M_PI / 180.0);
+    //     // ConfigManager::instance().set_camera_rotation(Vec3f(0, 0, 0), i * M_PI / 180.0);
+    //     m_raymarcher->calculate_frame();
+        
+    //     auto end_time = std::chrono::high_resolution_clock::now();
+    //     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+    //     std::cout << "Rendered in " << duration << " ms" << std::endl;
+        
+    //     m_stream->flush();
+    // }
+    while(true) {
         m_raymarcher->calculate_frame();
-        
-        auto end_time = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
-        std::cout << "Rendered in " << duration << " ms" << std::endl;
-        
+        m_raymarcher->update_power();
         m_stream->flush();
     }
 

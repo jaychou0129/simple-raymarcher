@@ -18,7 +18,7 @@ public:
     float radius()        const { return m_radius;           }
     float radius2()       const { return m_radius2;          }
 
-    virtual void sdf(IN const Vec3f& position, OUT Intersection& output_intersection) const override;
+    virtual void sdf(IN const Vec3f& position, OUT Intersection& output_intersection, IN const double power) const override;
 
 private:
     Vec3f m_center;

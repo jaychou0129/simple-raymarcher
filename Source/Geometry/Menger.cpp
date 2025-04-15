@@ -5,7 +5,7 @@
 #include "Menger.h"
 #include "Box.h"
 
-void Menger::sdf(IN const Vec3f& position, OUT Intersection& output_intersection) const {
+void Menger::sdf(IN const Vec3f& position, OUT Intersection& output_intersection, IN double power) const {
     auto menger_material = surface_material();
 
     float menger_distance = 0.0f;

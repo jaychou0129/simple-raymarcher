@@ -9,14 +9,16 @@
 
 class Mandelbulb : public SceneObject {
 public:
-Mandelbulb(const Vec3f &center, const Material& surface_material);
+Mandelbulb(const Vec3f &center, const Material& surface_material, double power, double power_incr);
 
     Vec3f center()        const { return m_center;           }
-
-    virtual void sdf(IN const Vec3f& position, OUT Intersection& output_intersection) const override;
+    // Vec3f rotate_point_y(double cx, double cz, double angle, Vec3f p);
+    virtual void sdf(IN const Vec3f& position, OUT Intersection& output_intersection, IN const double power) const override;
 
 private:
     Vec3f m_center;
+    double m_power;
+    double m_power_incr;
 };
 
 

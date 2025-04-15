@@ -3,11 +3,27 @@
 #include <cmath>
 #define rot 100.f
 
-Mandelbulb::Mandelbulb(const Vec3f &center, const Material& surface_material)
-    : SceneObject(surface_material), m_center(center) { }
+Mandelbulb::Mandelbulb(const Vec3f &center, const Material& surface_material, double power, double increment)
+    : SceneObject(surface_material), m_center(center), m_power(power), m_power_incr(increment) { }
 
 
-void Mandelbulb::sdf(IN const Vec3f& position, OUT Intersection& output_intersection) const {
+// Vec3f Mandelbulb::rotate_point_y(double cx, double cz, double angle, Vec3f p) {
+//     double s = std::sin(angle * M_PI / 180.0);
+//     double c = std::cos(angle * M_PI / 180.0);
+
+//     // translate point back to origin:
+//     p = Vec3f(p.x() - cx, p.y(), p.z() - cz);
+
+//     // rotate point
+//     double xnew = p.x() * c - p.z() * s;
+//     double znew = p.x() * s + p.z() * c;
+
+//     // translate point back:
+//     p = Vec3f(xnew + cx, p.y(), znew + cz);
+//     return p;
+// }
+
+void Mandelbulb::sdf(IN const Vec3f& position, OUT Intersection& output_intersection, IN const double power) const {
     // Vec3f cam = position + center();
     Vec3f cam = position;
 
@@ -19,7 +35,6 @@ void Mandelbulb::sdf(IN const Vec3f& position, OUT Intersection& output_intersec
     double r = 0.0;
 
     const int MAX_ITER = 100; // or whatever is appropriate
-    const double power = 8.0; // adjust this if needed
 
     for (int i = 0; i < MAX_ITER; ++i) {
         r = z.len();

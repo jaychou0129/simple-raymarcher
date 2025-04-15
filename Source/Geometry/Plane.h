@@ -13,7 +13,7 @@ class Plane : public SceneObject {
 public:
     Plane(const Vec4f& normal, const Material& material) :
             SceneObject(material), m_normal(normal.normalize()) { }
-    virtual void sdf (IN const Vec3f& position, OUT Intersection& output_intersection) const override;
+    virtual void sdf (IN const Vec3f& position, OUT Intersection& output_intersection, IN const double power) const override;
 private:
     Vec4f m_normal;
 };

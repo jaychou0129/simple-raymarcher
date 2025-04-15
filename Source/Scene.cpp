@@ -6,7 +6,7 @@
 #include "ConfigManager.h"
 #include "Constants.h"
 
-void Scene::sceneSDF(IN const Vec3f& position, OUT Intersection& output_intersection) {
+void Scene::sceneSDF(IN const Vec3f& position, OUT Intersection& output_intersection, double power) {
 
     if (ConfigManager::instance().get_amount_of_objects() > 0) {
         auto object = ConfigManager::instance().get_object(0);
@@ -15,11 +15,11 @@ void Scene::sceneSDF(IN const Vec3f& position, OUT Intersection& output_intersec
         auto& config_manager_instance = ConfigManager::instance();
 
         Intersection minimum_intersection;
-        config_manager_instance.get_object(0)->sdf(position, minimum_intersection);
+        config_manager_instance.get_object(0)->sdf(position, minimum_intersection, power);
         for (int i = 1; i < config_manager_instance.get_amount_of_objects(); ++i) {
 
             Intersection other_intersection;
-            config_manager_instance.get_object(i)->sdf(position, other_intersection);
+            config_manager_instance.get_object(i)->sdf(position, other_intersection, power);
 
             minimum_intersection = min(minimum_intersection, other_intersection);
         }

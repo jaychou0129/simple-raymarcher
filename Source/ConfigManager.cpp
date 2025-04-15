@@ -3,6 +3,7 @@
 //
 
 #include "ConfigManager.h"
+#include "Geometry/Arcane.h"
 #include "Geometry/Vec3f.h"
 #include "Geometry/Sphere.h"
 #include "Geometry/Box.h"
@@ -11,6 +12,7 @@
 #include "Lighting/DirectionalLight.h"
 #include "Lighting/PointLight.h"
 #include "Geometry/Mandelbulb.h"
+#include "Geometry/ApollonianGasket.h"
 
 #include <iostream>
 #include <yaml-cpp/yaml.h>
@@ -58,7 +60,23 @@ void ConfigManager::load_file(const std::string &file_src) {
         else if (objects[i]["type"].as<std::string>() == "Mandelbulb") {
             auto properties = objects[i]["properties"];
             m_objects.push_back(std::make_shared<Mandelbulb>(properties["center"].as<Vec3f>(),
-                                                             properties["material"].as<Material>()));
+                                                             properties["material"].as<Material>(),
+                                                             properties["power"].as<double>(),
+                                                             properties["increment"].as<double>()));
+
+            power = properties["power"].as<double>();
+        }
+        else if (objects[i]["type"].as<std::string>() == "ApollonianGasket") {
+            auto properties = objects[i]["properties"];
+            m_objects.push_back(std::make_shared<ApollonianGasket>(properties["center"].as<Vec3f>(),
+                                                             properties["material"].as<Material>(),
+                                                             properties["iterations"].as<size_t>()));
+        }
+        else if (objects[i]["type"].as<std::string>() == "Arcane") {
+            auto properties = objects[i]["properties"];
+            m_objects.push_back(std::make_shared<Arcane>(properties["center"].as<Vec3f>(),
+                                                             properties["material"].as<Material>(),
+                                                             properties["iterations"].as<size_t>()));
         }
         else if (objects[i]["type"].as<std::string>() == "Plane") {
             auto properties = objects[i]["properties"];
@@ -163,5 +181,5 @@ void ConfigManager::set_camera_rotation(const Vec3f& pivot, double rad) {
 
     Vec3f new_pos = Vec3f(x_new, translated.y(), z_new) + pivot;
     std::cout << "radius: " << rad << "\tnew_position: " << new_pos.x() << ", " << new_pos.y() << ", " << new_pos.z() << std::endl;
-    m_camera->set_pos(Vec3f(x_new, translated.y(), z_new) + pivot);
+    m_camera->set_pos(new_pos);
 }

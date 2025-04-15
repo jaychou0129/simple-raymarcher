@@ -24,9 +24,11 @@ public:
                std::shared_ptr<Screen<int>>& grid)
             : m_scene(scene), m_buffer(buffer), m_grid(grid) {
         epsilon = 2.0f / (m_grid->get_x_max() - m_grid->get_x_min());
+        power = ConfigManager::instance().get_power();
     }
     void calculate_frame();
     void calculate_rows(int y_lower_bound, int y_upper_bound, int x_min, int x_max, const ConfigManager& config_manager_instance, size_t num_of_lights);
+    void update_power();
 private:
 
     std::shared_ptr<Scene> m_scene;
@@ -48,6 +50,7 @@ private:
     static constexpr int NUM_OF_THREADS = 256;
     static const Color FOG_COLOR;
     float epsilon;
+    double power;
 };
 
 

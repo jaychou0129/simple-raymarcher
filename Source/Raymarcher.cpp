@@ -30,14 +30,14 @@ void Raymarcher::estimate_normal(IN const Vec3f& point, OUT Vec3f& normal) {
                  y_upper, y_lower,
                  z_upper, z_lower;
 
-    m_scene->sceneSDF(Vec3f(point.x() + epsilon, point.y(), point.z()), x_upper);
-    m_scene->sceneSDF(Vec3f(point.x() - epsilon, point.y(), point.z()), x_lower);
+    m_scene->sceneSDF(Vec3f(point.x() + epsilon, point.y(), point.z()), x_upper, power);
+    m_scene->sceneSDF(Vec3f(point.x() - epsilon, point.y(), point.z()), x_lower, power);
 
-    m_scene->sceneSDF(Vec3f(point.x(), point.y() + epsilon, point.z()), y_upper);
-    m_scene->sceneSDF(Vec3f(point.x(), point.y() - epsilon, point.z()), y_lower);
+    m_scene->sceneSDF(Vec3f(point.x(), point.y() + epsilon, point.z()), y_upper, power);
+    m_scene->sceneSDF(Vec3f(point.x(), point.y() - epsilon, point.z()), y_lower, power);
 
-    m_scene->sceneSDF(Vec3f(point.x(), point.y(), point.z() + epsilon), z_upper);
-    m_scene->sceneSDF(Vec3f(point.x(), point.y(), point.z() - epsilon), z_lower);
+    m_scene->sceneSDF(Vec3f(point.x(), point.y(), point.z() + epsilon), z_upper, power);
+    m_scene->sceneSDF(Vec3f(point.x(), point.y(), point.z() - epsilon), z_lower, power);
 
     normal = (Vec3f(
             x_upper.distance() -
@@ -52,6 +52,10 @@ void Raymarcher::estimate_normal(IN const Vec3f& point, OUT Vec3f& normal) {
     return;
 }
 
+void Raymarcher::update_power() {
+    power = power + 0.8;
+}
+
 void Raymarcher::march(IN const Ray& ray, OUT Intersection& output_intersection) {
     Vec3f position;
     Vec3f scaled;
@@ -62,7 +66,7 @@ void Raymarcher::march(IN const Ray& ray, OUT Intersection& output_intersection)
         position = ConfigManager::instance().get_camera()->pos() + scaled;
 
         Intersection intersection;
-        m_scene->sceneSDF(position, intersection);
+        m_scene->sceneSDF(position, intersection, power);
 
         total += intersection.distance();
 

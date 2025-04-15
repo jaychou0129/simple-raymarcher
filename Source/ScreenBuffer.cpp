@@ -163,13 +163,13 @@ void ScreenBuffer::flush() {
     assert(glGetError() == GL_NO_ERROR);
 
     glfwSwapBuffers(m_window);
-
-    while (!glfwWindowShouldClose(m_window)) {
-        if ((glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) || (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_REPEAT)) {
-            glfwSetWindowShouldClose(m_window, true);
-        }
-        glfwPollEvents();
-    }
+    glfwPollEvents();
+    // while (!glfwWindowShouldClose(m_window)) {
+    //     if ((glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) || (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_REPEAT)) {
+    //         glfwSetWindowShouldClose(m_window, true);
+    //     }
+    //     glfwPollEvents();
+    // }
 }
 
 void ScreenBuffer::init_glfw() {
@@ -179,6 +179,9 @@ void ScreenBuffer::init_glfw() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #ifdef __APPLE__
+    std::cout << "Running on macOS" << std::endl;
+    // Note: this makes sure that it doesn't just use the lower left corner of the screen
+    glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 }
