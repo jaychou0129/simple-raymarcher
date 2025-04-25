@@ -10,7 +10,6 @@
 #include <iostream>
 #include <chrono>
 
-
 void initiate_png_mode(std::shared_ptr<PixelBufferBase>& pixel_buffer,
                        std::shared_ptr<Screen<int>>& screen) {
     std::cout << "\nPlease enter the location to where you want the scene to be drawn\nExample: To draw to files named "
@@ -98,10 +97,20 @@ void Application::run_loop() {
         
     //     m_stream->flush();
     // }
-    while(true) {
+    float t = 0.0f;
+    const float speed = 0.2f;           // controls frequency
+    const float amplitude = 1.0f;        // how far forward/back
+    Vec3f initial_pos = ConfigManager::instance().get_camera()->pos();
+
+    while (true) {
+        float z_offset = amplitude * sin(t);
+        Vec3f new_pos = initial_pos + Vec3f(0.0f, 0.0f, z_offset);
+        ConfigManager::instance().get_camera()->set_pos(new_pos);
+
         m_raymarcher->calculate_frame();
         m_raymarcher->update_power();
         m_stream->flush();
+        t += speed;
     }
 
     std::cout << "Closing down..." << std::endl;
