@@ -67,11 +67,11 @@ void Raymarcher::march(IN const Ray& ray, OUT Intersection& output_intersection)
 
         Intersection intersection;
         m_scene->sceneSDF(position, intersection, power);
-
-        total += intersection.distance();
+        float safe_step = std::max(std::abs(intersection.distance()), 0.002f);
+        total += safe_step;
 
         // Hits an object
-        if (intersection.distance() < epsilon) {
+        if (std::abs(intersection.distance()) < 0.03f) {
             output_intersection = Intersection(total, intersection.material(), position);
             output_intersection.set_steps(step + 1);
             return;

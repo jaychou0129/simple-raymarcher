@@ -23,7 +23,7 @@ public:
                std::shared_ptr<PixelBufferBase>& buffer,
                std::shared_ptr<Screen<int>>& grid)
             : m_scene(scene), m_buffer(buffer), m_grid(grid) {
-        epsilon = 2.0f / (m_grid->get_x_max() - m_grid->get_x_min());
+        epsilon = 0.03f;
         power = ConfigManager::instance().get_power();
     }
     void calculate_frame();
