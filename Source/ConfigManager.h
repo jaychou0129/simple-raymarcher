@@ -31,7 +31,8 @@ public:
 
     int get_screen_width() const { return m_screen_width; }
     int get_screen_height() const { return m_screen_height; }
-    int get_power() const { return power; }
+    double get_power() const { return power; }
+    double get_increment() const { return increment; }
 private:
     std::vector<std::shared_ptr<SceneObject>> m_objects;
     std::vector<std::shared_ptr<LightBase>> m_lights;
@@ -42,6 +43,7 @@ private:
     int m_screen_width;
     int m_screen_height;
     double power;
+    double increment;
 
     bool m_config_loaded = false;
 };

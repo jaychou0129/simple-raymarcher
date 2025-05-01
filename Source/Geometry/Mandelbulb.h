@@ -9,7 +9,7 @@
 
 class Mandelbulb : public SceneObject {
 public:
-Mandelbulb(const Vec3f &center, const Material& surface_material, double power, double power_incr);
+Mandelbulb(const Vec3f &center, const Material& surface_material);
 
     Vec3f center()        const { return m_center;           }
     // Vec3f rotate_point_y(double cx, double cz, double angle, Vec3f p);

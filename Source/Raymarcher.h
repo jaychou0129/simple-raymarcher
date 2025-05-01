@@ -25,6 +25,7 @@ public:
             : m_scene(scene), m_buffer(buffer), m_grid(grid) {
         epsilon = 0.03f;
         power = ConfigManager::instance().get_power();
+        increment = ConfigManager::instance().get_increment();
     }
     void calculate_frame();
     void calculate_rows(int y_lower_bound, int y_upper_bound, int x_min, int x_max, const ConfigManager& config_manager_instance, size_t num_of_lights);
@@ -51,6 +52,7 @@ private:
     static const Color FOG_COLOR;
     float epsilon;
     double power;
+    double increment;
 };
 
 

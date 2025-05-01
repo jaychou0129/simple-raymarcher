@@ -3,8 +3,8 @@
 #include <cmath>
 #define rot 100.f
 
-Mandelbulb::Mandelbulb(const Vec3f &center, const Material& surface_material, double power, double increment)
-    : SceneObject(surface_material), m_center(center), m_power(power), m_power_incr(increment) { }
+Mandelbulb::Mandelbulb(const Vec3f &center, const Material& surface_material)
+    : SceneObject(surface_material), m_center(center) { }
 
 
 // Vec3f Mandelbulb::rotate_point_y(double cx, double cz, double angle, Vec3f p) {

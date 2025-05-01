@@ -1,9 +1,16 @@
 screen-width: 1024  # In pixels
 screen-height: 1024 # In pixels
 camera: {X: 0.0, Y: 0.0, Z: -1.5}
+power: 5.0
+increment: 0.08
 
 objects:
-  # - type: Mandelbulb
+  - type: Mandelbulb
+    properties:
+      center: {X: 0.0, Y: 0.0, Z: 0.0}
+      material: {specular: 0.7, diffuse: 0.5, ambient: 0.2, shininess: 10.0, color: {R: 1.0, G: 0.0, B: 0.0}}
+      radius: 0.5
+  # - type: ApollonianGasket
   #   properties:
   #     center: {X: 0.0, Y: 0.0, Z: 0.0}
   #     material: {specular: 0.7, diffuse: 0.5, ambient: 0.2, shininess: 10.0, color: {R: 1.0, G: 0.0, B: 0.0}}

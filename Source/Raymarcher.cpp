@@ -64,7 +64,7 @@ void Raymarcher::estimate_normal(IN const Vec3f& point, OUT Vec3f& normal) {
 }
 
 void Raymarcher::update_power() {
-    power = power + 0.8;
+    power = power + increment;
 }
 
 void Raymarcher::march(IN const Ray& ray, OUT Intersection& output_intersection) {

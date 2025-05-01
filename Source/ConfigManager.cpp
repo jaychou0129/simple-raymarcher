@@ -38,6 +38,17 @@ void ConfigManager::load_file(const std::string &file_src) {
     }
     m_screen_height = config["screen-height"].as<int>();
 
+    if (!config["power"]) {
+        throw std::runtime_error("config file syntax error: no power field detected."
+            "\nEither the power field was improperly declared or is non-existent");
+    }
+    power = config["power"].as<double>();
+
+    if (!config["increment"]) {
+        throw std::runtime_error("config file syntax error: no power field detected."
+            "\nEither the power field was improperly declared or is non-existent");
+    }
+    increment = config["increment"].as<double>();
 
     if (!config["camera"]) {
         throw std::runtime_error("config file syntax error: no camera field detected."
@@ -60,11 +71,7 @@ void ConfigManager::load_file(const std::string &file_src) {
         else if (objects[i]["type"].as<std::string>() == "Mandelbulb") {
             auto properties = objects[i]["properties"];
             m_objects.push_back(std::make_shared<Mandelbulb>(properties["center"].as<Vec3f>(),
-                                                             properties["material"].as<Material>(),
-                                                             properties["power"].as<double>(),
-                                                             properties["increment"].as<double>()));
-
-            power = properties["power"].as<double>();
+                                                             properties["material"].as<Material>()));
         }
         else if (objects[i]["type"].as<std::string>() == "ApollonianGasket") {
             auto properties = objects[i]["properties"];
