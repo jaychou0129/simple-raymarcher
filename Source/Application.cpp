@@ -98,7 +98,7 @@ void Application::run_loop() {
     //     m_stream->flush();
     // }
     float t = 0.0f;
-    const float speed = 0.2f;           // controls frequency
+    const float speed = 0.03f;           // controls frequency
     const float amplitude = 1.0f;        // how far forward/back
     Vec3f initial_pos = ConfigManager::instance().get_camera()->pos();
 
@@ -106,9 +106,9 @@ void Application::run_loop() {
         float z_offset = amplitude * sin(t);
         Vec3f new_pos = initial_pos + Vec3f(0.0f, 0.0f, z_offset);
         ConfigManager::instance().get_camera()->set_pos(new_pos);
-
+        std::cout << "Camera position: (" << new_pos.x() << ", " << new_pos.y() << ", " << new_pos.z() << ")" << std::endl;
         m_raymarcher->calculate_frame();
-        m_raymarcher->update_power();
+        // m_raymarcher->update_power();
         m_stream->flush();
         t += speed;
     }
