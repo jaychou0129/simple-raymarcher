@@ -6,9 +6,6 @@
 ApollonianGasket::ApollonianGasket(const Vec3f &center, const Material& surface_material, size_t iterations)
     : SceneObject(surface_material), m_center(center), m_iterations(iterations) { }
 
-void ApollonianGasket::sdf(IN const Vec3f& position, OUT Intersection& output_intersection, IN const double power) const {
-    auto gasket_material = surface_material();
-
 void ApollonianGasket::sdf(const Vec3f& position, Intersection& output_intersection, const double power) const {
     Vec3f p = position - m_center;
     float scale = 1.0f;
