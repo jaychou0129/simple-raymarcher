@@ -15,6 +15,7 @@
 #include "Geometry/ApollonianGasket.h"
 
 #include <iostream>
+#include <string>
 #include <yaml-cpp/yaml.h>
 
 ConfigManager& ConfigManager::instance() {
@@ -43,6 +44,12 @@ void ConfigManager::load_file(const std::string &file_src) {
             "\nEither the power field was improperly declared or is non-existent");
     }
     power = config["power"].as<double>();
+
+    if (!config["color"]) {
+        throw std::runtime_error("config file syntax error: no color field detected."
+            "\nEither the color field was improperly declared or is non-existent");
+    }
+    color = config["color"].as<std::string>();
 
     if (!config["increment"]) {
         throw std::runtime_error("config file syntax error: no power field detected."

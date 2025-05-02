@@ -200,11 +200,16 @@ void Raymarcher::calculate_rows(int y_lower_bound, int y_upper_bound, int x_min,
 
             // }
 
+            std::string colorChoice = ConfigManager::instance().get_color();
             Color pixel_color;
             Vec3f pos = intersection.pos();
             float h = pos.len() / 2.0f;  // Normalize based on scene scale
             h = clamp(h, 0.0f, 1.0f);    // Ensure within valid range
-            pixel_color = turbo_colormap_lookup(h);
+            if (colorChoice == "turbo") { 
+                pixel_color = turbo_colormap_lookup(h);
+            } else if (colorChoice == "purple") {
+                pixel_color = Color(h, 0.0f, 1.0f - h);
+            }
             
 
             if (intersection.material() == Constants::BACKGROUND_MATERIAL) {
